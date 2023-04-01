@@ -4,6 +4,7 @@ import sys
 
 # Import non-standard modules.
 import pygame as pg
+import tkinter as tk
 from pygame.locals import *
 
 # Import local modules
@@ -14,15 +15,6 @@ default_geometry = "1000x1000"
 
 
 def update(dt, boids):
-    """
-    Update game. Called once per frame.
-    dt is the amount of time passed since last frame.
-    If you want to have constant apparent movement no matter your framerate,
-    what you can do is something like
-
-    x += v * dt
-
-    and this will scale your velocity based on time. Extend as necessary."""
 
     # Go through events that are passed to the script by the window.
     for event in pg.event.get():
@@ -86,16 +78,13 @@ def update(dt, boids):
 
 
 def draw(screen, background, boids):
-    """
-    Draw things to the window. Called once per frame.
-    """
-
     # Redraw screen here
     boids.clear(screen, background)
     dirty = boids.draw(screen)
 
     # Flip the display so that the things we drew actually show up.
     pg.display.update(dirty)
+
 
 
 def main(args):
@@ -111,10 +100,38 @@ def main(args):
     # Set up the window.
     # logo = pg.image.load("logo32x32.png")
     # pg.display.set_icon(logo)
+    introWin = tk.Tk()
+    introWin.title("Controls")
+    def quit_app():
+        introWin.quit()
+
+    label1 = tk.Label(introWin, text="Press up arrow to increase boids")
+    label1.pack()
+    label2 = tk.Label(introWin, text="Press down arrow to decrease boid")
+    label2.pack()
+    label3 = tk.Label(introWin, text="Press 1 or 2 to raise or lower boid force")
+    label3.pack()
+    label4 = tk.Label(introWin, text="Press 3 or 4 to raise or lower boid perception")
+    label4.pack()
+    label5 = tk.Label(introWin, text="Press 5 or 6 to raise or lower boid crowding")
+    label5.pack()
+    label6 = tk.Label(introWin, text="Press d to show boids debug")
+    label6.pack()
+    label7 = tk.Label(introWin, text="Press r to reset the simulation")
+    label7.pack()
+    label8 = tk.Label(introWin, text="Press q to quit the simulation")
+    label8.pack()
+
+
+    button = tk.Button(introWin, text="Simulate", command=quit_app)
+    button.pack()
+
+    introWin.mainloop()
+
+
     pg.display.set_caption("BOIDS!")
     window_width, window_height = [int(x) for x in args.geometry.split("x")]
     flags = DOUBLEBUF
-
     screen = pg.display.set_mode((window_width, window_height), flags)
     screen.set_alpha(None)
     background = pg.Surface(screen.get_size()).convert()
@@ -148,3 +165,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args)
+
+
+
+
+
+
